@@ -1,2 +1,2 @@
-export * from './hello-world.controller';
+export * from './converter.controller';
 export * from './health.controller';
