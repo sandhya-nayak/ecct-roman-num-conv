@@ -38,16 +38,16 @@ export class ConverterService implements ConverterApi {
     return n%2 == 0;
   }
 
-  async toNumber(roman: string): Promise<number> {
-    this.logger.info(`Converting ${roman} to number`);
+  async toNumber(value: string): Promise<number> {
+    this.logger.info(`Converting ${value} to number`);
     let numericalValue = 0;
-    if(roman == 'nulla'){
+    if(value == 'nulla'){
       return 0;
     }
-    for(let i = 0; i<roman.length; i++){
-      let [currentVal,currentIndex] = this.getNumberFromMap(roman.charAt(i));
-      if(i+1 < roman.length){
-        let [nextVal,nextIndex] = this.getNumberFromMap(roman.charAt(i+1));
+    for(let i = 0; i<value.length; i++){
+      let [currentVal,currentIndex] = this.getNumberFromMap(value.charAt(i));
+      if(i+1 < value.length){
+        let [nextVal,nextIndex] = this.getNumberFromMap(value.charAt(i+1));
         if((!this.isEven(nextIndex) && currentIndex == nextIndex+1) || 
           (this.isEven(nextIndex) && currentIndex == nextIndex+2)){
           numericalValue = numericalValue + nextVal - currentVal;

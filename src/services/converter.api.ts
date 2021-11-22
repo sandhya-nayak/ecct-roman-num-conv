@@ -1,3 +1,3 @@
 export abstract class ConverterApi {
-  abstract toNumber(roman?: string): Promise<number>;
+  abstract toNumber(value?: string): Promise<number>;
 }
