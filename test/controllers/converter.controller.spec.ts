@@ -7,6 +7,7 @@ import {buildApiServer} from '../helper';
 
 class MockConverterService implements ConverterApi {
   toNumber = jest.fn().mockName('toNumber');
+  toRoman = jest.fn().mockName('toRoman');
 }
 
 describe('converter.controller', () => {

@@ -13,6 +13,28 @@ const romanNumberMap =  new Map<string,number>([
   ['I',1]
 ]);
 
+const numberRomanMap =  new Map<number,string>([
+  [1000,'M'],
+  [1100,'MC'],
+  [900,'CM'],
+  [500,'D'],
+  [600,'DC'],
+  [400,'CD'],
+  [100,'C'],
+  [110,'CX'],
+  [90,'XC'],
+  [50,'L'],
+  [60,'LX'],
+  [40,'XL'],
+  [10,'X'],
+  [11,'XI'],
+  [9,'IX'],
+  [5,'V'],
+  [6,'VI'],
+  [4,'IV'],
+  [1,'I']
+]);
+
 export class ConverterService implements ConverterApi {
   logger: LoggerApi;
 
@@ -62,5 +84,26 @@ export class ConverterService implements ConverterApi {
       }
     }
     return numericalValue;
+  }
+
+  async toRoman(value: number): Promise<string> {
+    this.logger.info(`Converting ${value} to roman`);
+    if(value == 0){
+      return 'nulla';
+    }
+    let roman = '';
+    for(const [key, val] of numberRomanMap.entries()) {
+      let exit = false;
+      while(!exit){
+        if (value >= key){
+          roman+=val;
+          value-=key;
+        }
+        else{
+          exit = true;
+        }
+      }
+    }
+    return roman;
   }
 }

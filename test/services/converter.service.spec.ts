@@ -54,4 +54,28 @@ describe('Converter service', () =>{
     expect(await service.toNumber('MMMCMXCIX')).toBe(3999);
   });
 
+  it('toRoman(0) should return nulla', async()=> {
+    expect(await service.toRoman(0)).toBe('nulla');
+  });
+
+  context('when checking first 21 numbers', () => {
+    it.each([[1,'I'],[2,'II'],[3,'III'],[4,'IV'],[5,'V'],[6,'VI'],[7,'VII'],[8,'VIII'],[9,'IX'],[10,'X'],
+            [11,'XI'],[12,'XII'],[13,'XIII'],[14,'XIV'],[15,'XV'],[16,'XVI'],[17,'XVII'],[18,'XVIII'],[19,'XIX'],
+            [20,'XX'],[21,'XXI']])('toRoman(%s) should return %s', async (value, expectedRoman) => {
+        expect(await service.toRoman(value)).toBe(expectedRoman);
+    });
+  });
+
+  it('toRoman(1999) should return MCMXCIX', async()=> {
+    expect(await service.toRoman(1999)).toBe('MCMXCIX');
+  });
+  
+  it('toRoman(2768) should return MMDCCLXVIII', async()=> {
+    expect(await service.toRoman(2768)).toBe('MMDCCLXVIII');
+  });
+  
+  it('toRoman(3999) should return MMMCMXCIX', async()=> {
+    expect(await service.toRoman(3999)).toBe('MMMCMXCIX');
+  });
+
 });
