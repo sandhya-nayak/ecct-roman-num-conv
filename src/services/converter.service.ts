@@ -1,6 +1,7 @@
 import {ConverterApi} from './converter.api';
 import {Inject} from 'typescript-ioc';
 import {LoggerApi} from '../logger';
+import { Errors } from 'typescript-rest';
 
 const romanNumberMap =  new Map<string,number>([
   ['M',1000],
@@ -45,6 +46,7 @@ export class ConverterService implements ConverterApi {
   }
 
   getNumberFromMap(roman: string) {
+    this.logger.info(`Getting the numeric value of ${roman}`);
     let index = 0;
     for(const [key, value] of romanNumberMap.entries()) {
       if (key == roman){
@@ -55,34 +57,63 @@ export class ConverterService implements ConverterApi {
     return null;
   }
   
-  isEven(n) {
+  isEven(n: number) {
     return n%2 == 0;
+  }
+
+  async hasFourConsecutiveSameLetters(value: string): Promise<boolean>{
+    this.logger.info(`Checking if ${value} has four same consecutive letters - which would mean it is an invalid roman number`);
+    let consecutiveSameLetterCount = 1;
+    for(let i = 0; i<value.length; i++){
+      let [currentVal] = this.getNumberFromMap(value.charAt(i));
+      if(i+1 < value.length){
+        let [nextVal] = this.getNumberFromMap(value.charAt(i+1));
+        if(currentVal == nextVal){
+          consecutiveSameLetterCount++;
+        }
+        else{
+          consecutiveSameLetterCount = 1;
+        }
+      }
+      if(consecutiveSameLetterCount == 4){
+        return false;
+      }
+    }
+    return true;
   }
 
   async toNumber(value: string): Promise<number> {
     this.logger.info(`Converting ${value} to number`);
-    let numericalValue = 0;
     if(value == 'nulla'){
       return 0;
     }
-    for(let i = 0; i<value.length; i++){
-      let [currentVal,currentIndex] = this.getNumberFromMap(value.charAt(i));
-      if(i+1 < value.length){
-        let [nextVal,nextIndex] = this.getNumberFromMap(value.charAt(i+1));
-        if((!this.isEven(nextIndex) && currentIndex == nextIndex+1) || 
-          (this.isEven(nextIndex) && currentIndex == nextIndex+2)){
-          numericalValue = numericalValue + nextVal - currentVal;
-          i++;
+    if(await this.hasFourConsecutiveSameLetters(value)){
+      let numericalValue = 0;
+      for(let i = 0; i<value.length; i++){
+        let [currentVal,currentIndex] = this.getNumberFromMap(value.charAt(i));
+        if(i+1 < value.length){
+          let [nextVal,nextIndex] = this.getNumberFromMap(value.charAt(i+1));
+          if((!this.isEven(nextIndex) && currentIndex == nextIndex+1) || 
+            (this.isEven(nextIndex) && currentIndex == nextIndex+2)){
+            numericalValue = numericalValue + nextVal - currentVal;
+            i++;
+          }
+          else if(currentIndex > nextIndex){
+            throw new Errors.BadRequestError;
+          }
+          else{
+            numericalValue = numericalValue + currentVal;
+          }
         }
         else{
           numericalValue = numericalValue + currentVal;
         }
       }
-      else{
-        numericalValue = numericalValue + currentVal;
-      }
+      return numericalValue;
     }
-    return numericalValue;
+    else{
+      throw new Errors.BadRequestError;
+    }
   }
 
   async toRoman(value: number): Promise<string> {

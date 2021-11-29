@@ -2,6 +2,7 @@ import {Container} from 'typescript-ioc';
 import {ConverterService} from '../../src/services';
 import {ApiServer} from '../../src/server';
 import {buildApiServer} from '../helper';
+import {BadRequestError} from 'typescript-rest/dist/server/model/errors';
 
 describe('Converter service', () =>{
 
@@ -54,6 +55,15 @@ describe('Converter service', () =>{
     it('toNumber(MMMCMXCIX) should return 3999', async()=> {
       expect(await service.toNumber('MMMCMXCIX')).toBe(3999);
     });
+
+    it('toNumber(MMXMCMXCIX) should throw Bad Request Error', async()=> {
+      await expect(service.toNumber("MMXMCMXCIX")).rejects.toThrow(BadRequestError);
+    });
+
+    it('toNumber(XIIII) should throw Bad Request Error', async()=> {
+      await expect(service.toNumber("XIIII")).rejects.toThrow(BadRequestError);
+    });
+
   });
 
   context('toRoman', () => {
