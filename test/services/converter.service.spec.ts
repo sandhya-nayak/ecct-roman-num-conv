@@ -66,6 +66,18 @@ describe('Converter service', () =>{
       await expect(service.toNumber("XIIII")).rejects.toThrow(BadRequestError);
     });
 
+    it('toNumber(MXCXI) should throw Bad Request Error', async()=> {
+      await expect(service.toNumber("MXCXI")).rejects.toThrow(BadRequestError);
+    });
+
+    it('toNumber(IVIII) should throw Bad Request Error', async()=> {
+      await expect(service.toNumber("IVIII")).rejects.toThrow(BadRequestError);
+    });
+
+    it('toNumber(IXVI) should throw Bad Request Error', async()=> {
+      await expect(service.toNumber("IXVI")).rejects.toThrow(BadRequestError);
+    });
+
   });
 
   context('toRoman', () => {

@@ -83,6 +83,7 @@ export class ConverterService implements ConverterApi {
   }
 
   async toNumber(value: string): Promise<number> {
+    let lastBorderCharacter = "";
     this.logger.info(`Converting ${value} to number`);
     if(value == 'nulla'){
       return 0;
@@ -96,16 +97,23 @@ export class ConverterService implements ConverterApi {
           if((!this.isEven(nextIndex) && currentIndex == nextIndex+1) || 
             (this.isEven(nextIndex) && currentIndex == nextIndex+2)){
             numericalValue = numericalValue + nextVal - currentVal;
+            lastBorderCharacter = value.charAt(i);
             i++;
           }
           else if(currentIndex > nextIndex){
             throw new Errors.BadRequestError;
           }
           else{
+            if (value.charAt(i) == lastBorderCharacter){
+              throw new Errors.BadRequestError;
+            }
             numericalValue = numericalValue + currentVal;
           }
         }
         else{
+          if (value.charAt(i) == lastBorderCharacter){
+            throw new Errors.BadRequestError;
+          }
           numericalValue = numericalValue + currentVal;
         }
       }
