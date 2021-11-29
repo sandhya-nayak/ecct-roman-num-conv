@@ -31,16 +31,18 @@ describe('Converter service', () =>{
     });
 
     context('when checking valid edge cases', () => {
-      it.each([['MC',1100],['CM',900],['DC',600],['CD',400],['CX',110],['XC',90],['LX',60],['XL',40],['XI',11],['IX',9],
-              ['VI',6],['IV',4]])('toNumber(%s) should return %s', async (roman, expectedNumber) => {
-        expect(await service.toNumber(roman)).toBe(expectedNumber);
+      const testMap=new Map([['MC',1100],['CM',900],['DC',600],['CD',400],['CX',110],['XC',90],['LX',60],['XL',40],['XI',11],['IX',9],
+      ['VI',6],['IV',4]]);
+      testMap.forEach((value:number,key:string) => async () => {
+        expect(await service.toNumber(key)).toBe(value);
       });
     });
 
     context('when checking first 21 numbers', () => {
-      it.each([['II',2],['III',3],['VII',7],['VIII',8],['XII',12],['XIII',13],['XIV',14],['XV',15],['XVI',16],['XVII',17],['XVIII',18],
-      ['XIX',19],['XX',20],['XXI',21]])('toNumber(%s) should return %s', async (roman, expectedNumber) => {
-          expect(await service.toNumber(roman)).toBe(expectedNumber);
+      const testMap=new Map([['II',2],['III',3],['VII',7],['VIII',8],['XII',12],['XIII',13],['XIV',14],['XV',15],['XVI',16],['XVII',17],['XVIII',18],
+      ['XIX',19],['XX',20],['XXI',21]]);
+      testMap.forEach((value:number,key:string) => async () => {
+        expect(await service.toNumber(key)).toBe(value);
       });
     });
 
@@ -72,10 +74,11 @@ describe('Converter service', () =>{
     });
   
     context('when checking first 21 numbers', () => {
-      it.each([[1,'I'],[2,'II'],[3,'III'],[4,'IV'],[5,'V'],[6,'VI'],[7,'VII'],[8,'VIII'],[9,'IX'],[10,'X'],
+      const testMap=new Map([[1,'I'],[2,'II'],[3,'III'],[4,'IV'],[5,'V'],[6,'VI'],[7,'VII'],[8,'VIII'],[9,'IX'],[10,'X'],
               [11,'XI'],[12,'XII'],[13,'XIII'],[14,'XIV'],[15,'XV'],[16,'XVI'],[17,'XVII'],[18,'XVIII'],[19,'XIX'],
-              [20,'XX'],[21,'XXI']])('toRoman(%s) should return %s', async (value, expectedRoman) => {
-          expect(await service.toRoman(value)).toBe(expectedRoman);
+              [20,'XX'],[21,'XXI']]);
+      testMap.forEach((value:string,key:number) => async () => {
+        expect(await service.toRoman(key)).toBe(value);
       });
     });
   
