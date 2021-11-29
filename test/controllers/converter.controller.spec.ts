@@ -32,40 +32,40 @@ describe('converter.controller', () => {
   });
 
   describe('Given /to-number', () => {
-    const romanInput = 'XI';
-    const numericOutput = 11;
+    describe('When checking for valid roman number input', () => {
+      const romanInput = 'XI';
+      const numericOutput = 11;
 
-    beforeEach(() => {
-      mockToNumber.mockImplementation(romanInput => numericOutput);
-    });
+      beforeEach(() => {
+        mockToNumber.mockImplementation(romanInput => numericOutput);
+      });
 
-    test('should return converted value for valid roman input', async() => {
-      await request(app)
-          .get('/to-number')
-          .query({value: romanInput})
-          .expect(200)
-          .then((response) => {
-            expect(response.body["value"]).toBe(numericOutput);
-          });
-    });
-    
-  });
-
-  describe('Given /to-number', () => {
-    const romanInput = 'XIIII';
-
-    beforeEach(() => {
-      mockToNumber.mockImplementation(() => {
-        throw new BadRequestError();
+      test('should return correct converted value', async() => {
+        await request(app)
+            .get('/to-number')
+            .query({value: romanInput})
+            .expect(200)
+            .then((response) => {
+              expect(response.body["value"]).toBe(numericOutput);
+            });
       });
     });
 
-    test('should return error for invalid roman input', async() => {
-      await request(app)
-          .get('/to-number')
-          .query({value: romanInput})
-          .expect(400);
-    });
+    describe('When checking for invalid roman number input', () => {
+      const romanInput = 'XIIII';
 
+      beforeEach(() => {
+        mockToNumber.mockImplementation(() => {
+          throw new BadRequestError();
+        });
+      });
+
+      test('should return bad request error', async() => {
+        await request(app)
+            .get('/to-number')
+            .query({value: romanInput})
+            .expect(400);
+      });
+    });
   });
 });
