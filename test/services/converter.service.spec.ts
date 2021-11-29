@@ -90,6 +90,18 @@ describe('Converter service', () =>{
     it('toRoman(3999) should return MMMCMXCIX', async()=> {
       expect(await service.toRoman(3999)).toBe('MMMCMXCIX');
     });
-  });
 
+    it('toRoman(4000) should throw Bad Request Error', async()=> {
+      await expect(service.toRoman(4000)).rejects.toThrow(BadRequestError);
+    });
+    
+    it('toRoman(-5) should throw Bad Request Error', async()=> {
+      await expect(service.toRoman(-5)).rejects.toThrow(BadRequestError);
+    });
+    
+    it('toRoman(1.35) should throw Bad Request Error', async()=> {
+      await expect(service.toRoman(1.35)).rejects.toThrow(BadRequestError);
+    });
+
+  });
 });
