@@ -28,6 +28,6 @@ export class ConverterController {
   async toNumber(@QueryParam('value') value:string): Promise<object> {
     this.logger.info(`Converting ${value} to number`);
     const resp = await this.service.toNumber(value);
-    return { value: resp};
+    return {value: resp};
   }
 }

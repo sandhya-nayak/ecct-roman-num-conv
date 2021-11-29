@@ -42,7 +42,7 @@ describe('converter.controller', () => {
         mockToNumber.mockImplementation(romanInput => numericOutput);
       });
 
-      test('should return correct converted value', async() => {
+      test(`${romanInput} should return correct converted value ${numericOutput}`, async() => {
         await request(app)
             .get('/to-number')
             .query({value: romanInput})
@@ -62,7 +62,7 @@ describe('converter.controller', () => {
         });
       });
 
-      test('should return bad request error', async() => {
+      test(`${romanInput} should throw Bad Request Error`, async() => {
         await request(app)
             .get('/to-number')
             .query({value: romanInput})
