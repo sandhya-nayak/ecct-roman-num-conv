@@ -1,4 +1,4 @@
-import {GET, Path, QueryParam, PathParam} from 'typescript-rest';
+import {GET, Path, QueryParam} from 'typescript-rest';
 import {Inject} from 'typescript-ioc';
 import {ConverterApi} from '../services';
 import {LoggerApi} from '../logger';
@@ -15,11 +15,12 @@ export class ConverterController {
     return this._baseLogger.child('ConverterController');
   }
 
-  @Path('/toRoman:value')
+  @Path('/to-roman')
   @GET
-  async toRoman(@PathParam('value') value:number): Promise<string> {
+  async toRoman(@QueryParam('value') value:number): Promise<object> {
     this.logger.info(`Converting ${value} to roman`);
-    return this.service.toRoman(value);
+    const resp = await this.service.toRoman(value);
+    return {value: resp};
   }
 
   @Path('/to-number')

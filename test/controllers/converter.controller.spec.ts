@@ -15,6 +15,7 @@ describe('converter.controller', () => {
 
   let app: Application;
   let mockToNumber: jest.Mock;
+  let mockToRoman: jest.Mock;
 
   beforeEach(() => {
     const apiServer = buildApiServer();
@@ -25,6 +26,7 @@ describe('converter.controller', () => {
 
     const mockService: ConverterApi = Container.get(ConverterApi);
     mockToNumber = mockService.toNumber as jest.Mock;
+    mockToRoman = mockService.toRoman as jest.Mock;
   });
 
   test('canary validates test infrastructure', () => {
@@ -64,6 +66,61 @@ describe('converter.controller', () => {
         await request(app)
             .get('/to-number')
             .query({value: romanInput})
+            .expect(400);
+      });
+    });
+  });
+
+  describe('Given /to-roman', () => {
+    describe('When checking for valid numeric input', () => {
+      const numericInput = 97;
+      const romanOutput = 'XCVII';
+
+      beforeEach(() => {
+        mockToRoman.mockImplementation(numericInput => romanOutput);
+      });
+
+      test(`${numericInput} should return correct converted value ${romanOutput}`, async() => {
+        await request(app)
+            .get('/to-roman')
+            .query({value: numericInput})
+            .expect(200)
+            .then((response) => {
+              expect(response.body["value"]).toBe(romanOutput);
+            });
+      });
+    });
+
+    describe('When checking for invalid numeric input', () => {
+      const numericInputs = [-1,4000,1.53];
+
+      beforeEach(() => {
+        mockToRoman.mockImplementation(() => {
+          throw new BadRequestError();
+        });
+      });
+
+      test.each(numericInputs)('%s should throw Bad Request Error', async(input) => {
+        await request(app)
+            .get('/to-roman')
+            .query({value: input})
+            .expect(400);
+      });
+    });
+
+    describe('When checking for non-numeric input', () => {
+      const input = "MMXI";
+
+      beforeEach(() => {
+        mockToRoman.mockImplementation(() => {
+          throw new BadRequestError();
+        });
+      });
+
+      test(`${input} should throw Bad Request Error`, async() => {
+        await request(app)
+            .get('/to-roman')
+            .query({value: input})
             .expect(400);
       });
     });
