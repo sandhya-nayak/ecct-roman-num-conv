@@ -121,19 +121,24 @@ export class ConverterService implements ConverterApi {
     if(value == 0){
       return 'nulla';
     }
-    let roman = '';
-    for(const [key, val] of numberRomanMap.entries()) {
-      let exit = false;
-      while(!exit){
-        if (value >= key){
-          roman+=val;
-          value-=key;
-        }
-        else{
-          exit = true;
+    if(value >= 0 && value <= 3999 && value%1 == 0){
+      let roman = '';
+      for(const [key, val] of numberRomanMap.entries()) {
+        let exit = false;
+        while(!exit){
+          if (value >= key){
+            roman+=val;
+            value-=key;
+          }
+          else{
+            exit = true;
+          }
         }
       }
+      return roman;
     }
-    return roman;
+    else{
+      throw new Errors.BadRequestError;
+    }
   }
 }

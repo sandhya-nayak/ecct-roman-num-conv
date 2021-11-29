@@ -3,7 +3,7 @@ import {Inject} from 'typescript-ioc';
 import {ConverterApi} from '../services';
 import {LoggerApi} from '../logger';
 
-@Path('/hello')
+//@Path('/hello')
 export class ConverterController {
 
   @Inject
@@ -15,11 +15,19 @@ export class ConverterController {
     return this._baseLogger.child('ConverterController');
   }
 
-  // @GET
-  // async sayHelloToUnknownUser(): Promise<string> {
-  //   this.logger.info('Saying hello to someone');
-  //   return this.service.greeting();
-  // }
+  @Path('/toRoman:value')
+  @GET
+  async toRoman(@PathParam('value') value:number): Promise<string> {
+    this.logger.info(`Converting ${value} to roman`);
+    return this.service.toRoman(value);
+  }
+
+  @Path('/toNumber:value')
+  @GET
+  async toNumber(@PathParam('value') value:string): Promise<number> {
+    this.logger.info(`Converting ${value} to number`);
+    return this.service.toNumber(value);
+  }
 
   // @Path(':name')
   // @GET
