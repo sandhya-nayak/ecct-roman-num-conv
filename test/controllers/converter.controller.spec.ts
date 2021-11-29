@@ -4,6 +4,7 @@ import {Container, Scope} from 'typescript-ioc';
 
 import {ConverterApi} from '../../src/services';
 import {buildApiServer} from '../helper';
+import { BadRequestError } from 'typescript-rest/dist/server/model/errors';
 
 class MockConverterService implements ConverterApi {
   toNumber = jest.fn().mockName('toNumber');
@@ -30,28 +31,41 @@ describe('converter.controller', () => {
     expect(true).toBe(true);
   });
 
-  // describe('Given /hello', () => {
-  //   const expectedResponse = 'Hello there!';
+  describe('Given /to-number', () => {
+    const romanInput = 'XI';
+    const numericOutput = 11;
 
-  //   beforeEach(() => {
-  //     mockToNumber.mockReturnValueOnce(Promise.resolve(expectedResponse));
-  //   });
+    beforeEach(() => {
+      mockToNumber.mockImplementation(romanInput => numericOutput);
+    });
 
-  //   test('should return "Hello, World!"', done => {
-  //     request(app).get('/hello').expect(200).expect(expectedResponse, done);
-  //   });
-  // });
+    test('should return converted value for valid roman input', async() => {
+      await request(app)
+          .get('/to-number')
+          .query({value: romanInput})
+          .expect(200)
+          .then((response) => {
+            expect(response.body["value"]).toBe(numericOutput);
+          });
+    });
+    
+  });
 
-  // describe('Given /hello/Johnny', () => {
-  //   const name = 'Johnny';
+  describe('Given /to-number', () => {
+    const romanInput = 'XIIII';
 
-  //   beforeEach(() => {
-  //     mockToNumber.mockImplementation(name => name);
-  //   });
+    beforeEach(() => {
+      mockToNumber.mockImplementation(() => {
+        throw new BadRequestError();
+      });
+    });
 
-  //   test('should return "Hello, Johnny!"', done => {
-  //     request(app).get(`/hello/${name}`).expect(200).expect(name, done);
-  //   });
-  // });
+    test('should return error for invalid roman input', async() => {
+      await request(app)
+          .get('/to-number')
+          .query({value: romanInput})
+          .expect(400);
+    });
 
+  });
 });

@@ -1,9 +1,9 @@
-import {GET, Path, PathParam} from 'typescript-rest';
+import {GET, Path, QueryParam, PathParam} from 'typescript-rest';
 import {Inject} from 'typescript-ioc';
 import {ConverterApi} from '../services';
 import {LoggerApi} from '../logger';
 
-//@Path('/hello')
+@Path('/')
 export class ConverterController {
 
   @Inject
@@ -22,17 +22,11 @@ export class ConverterController {
     return this.service.toRoman(value);
   }
 
-  @Path('/toNumber:value')
+  @Path('/to-number')
   @GET
-  async toNumber(@PathParam('value') value:string): Promise<number> {
+  async toNumber(@QueryParam('value') value:string): Promise<object> {
     this.logger.info(`Converting ${value} to number`);
-    return this.service.toNumber(value);
+    const resp = await this.service.toNumber(value);
+    return { value: resp};
   }
-
-  // @Path(':name')
-  // @GET
-  // async sayHello(@PathParam('name') name: string): Promise<string> {
-  //   this.logger.info(`Saying hello to ${name}`);
-  //   return this.service.greeting(name);
-  // }
 }

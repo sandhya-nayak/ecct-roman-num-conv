@@ -65,7 +65,7 @@
     "@types/superagent": "^4.1.12",
     "@types/supertest": "^2.0.11",
     "babel-jest": "^27.1.1",
-    "jest": "^27.1.1",
+    "jest": "^27.4.0",
     "jest-plugin-context": "^2.9.0",
     "jest-sonar-reporter": "^2.0.0",
     "pino-pretty": "^7.0.0",
