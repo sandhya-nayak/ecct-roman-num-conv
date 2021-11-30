@@ -14,7 +14,7 @@ FROM registry.access.redhat.com/ubi8/nodejs-14:1-43
 
 USER default
 
-LABEL name="ibm/template-node-typescript" \
+LABEL name="ibm/ecct-roman-num-conv" \
       vendor="IBM" \
       version="1" \
       release="28.1618434924" \
