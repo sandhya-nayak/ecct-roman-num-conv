@@ -54,7 +54,7 @@ export class ConverterService implements ConverterApi {
       }
       index++;
     }
-    return null;
+    throw new Errors.BadRequestError;
   }
   
   isEven(n: number) {
