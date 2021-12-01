@@ -19,18 +19,18 @@ describe('Converter service', () =>{
   });
 
   context('toNumber', () => {
-    it('toNumber(nulla) should return 0', async()=> {
+    it('should return 0 for nulla', async()=> {
       expect(await service.toNumber('nulla')).toBe(0);
     });
 
-    it("should return the correct value when single letter input is provided", () => {
+    it("should return the correct value for single letter input", () => {
       const testMap=new Map([['M',1000],['D',500],['C',100],['L',50],['X',10],['V',5],['I',1]]);
       testMap.forEach((value:number,key:string) => async() => {
         expect(await service.toNumber(key)).toBe(value);
       });
     });
 
-    context('when checking valid edge cases', () => {
+    it('should return the correct value for valid edge cases', () => {
       const testMap=new Map([['MC',1100],['CM',900],['DC',600],['CD',400],['CX',110],['XC',90],['LX',60],['XL',40],['XI',11],['IX',9],
       ['VI',6],['IV',4]]);
       testMap.forEach((value:number,key:string) => async () => {
@@ -38,7 +38,7 @@ describe('Converter service', () =>{
       });
     });
 
-    context('when checking first 21 numbers', () => {
+    it('should return the correct value for the first 21 numbers', () => {
       const testMap=new Map([['II',2],['III',3],['VII',7],['VIII',8],['XII',12],['XIII',13],['XIV',14],['XV',15],['XVI',16],['XVII',17],['XVIII',18],
       ['XIX',19],['XX',20],['XXI',21]]);
       testMap.forEach((value:number,key:string) => async () => {
@@ -46,50 +46,28 @@ describe('Converter service', () =>{
       });
     });
 
-    it('toNumber(MCMXCIV) should return 1994', async()=> {
-      expect(await service.toNumber('MCMXCIV')).toBe(1994);
-    });
-    
-    it('toNumber(MMDCCLXVIII) should return 2768', async()=> {
-      expect(await service.toNumber('MMDCCLXVIII')).toBe(2768);
-    });
-    
-    it('toNumber(MMMCMXCIX) should return 3999', async()=> {
-      expect(await service.toNumber('MMMCMXCIX')).toBe(3999);
+    it('should return the correct value for valid roman numbers', () => {
+      const testMap = new Map([['MCMXCIV',1994],['MMDCCLXVIII',2768],['MMMCMXCIX',3999]]);
+      testMap.forEach((value:number,key:string) => async () => {
+        expect(await service.toNumber(key)).toBe(value);
+      });
     });
 
-    it('toNumber(MMXMCMXCIX) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("MMXMCMXCIX")).rejects.toThrow(BadRequestError);
-    });
-
-    it('toNumber(XIIII) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("XIIII")).rejects.toThrow(BadRequestError);
-    });
-
-    it('toNumber(MXCXI) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("MXCXI")).rejects.toThrow(BadRequestError);
-    });
-
-    it('toNumber(IVIII) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("IVIII")).rejects.toThrow(BadRequestError);
-    });
-
-    it('toNumber(IXVI) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("IXVI")).rejects.toThrow(BadRequestError);
-    });
-
-    it('toNumber(ABCD) should throw Bad Request Error', async()=> {
-      await expect(service.toNumber("ABCD")).rejects.toThrow(BadRequestError);
+    it('should throw Bad Request Error for invalid roman numbers', () => {
+      const testValues = ['MMXMCMXCIX','XIIII','MXCXI','IVIII','IXVI','ABCD'];
+      testValues.forEach((value) => async () => {
+        await expect(service.toNumber(value)).rejects.toThrow(BadRequestError);
+      });
     });
 
   });
 
   context('toRoman', () => {
-    it('toRoman(0) should return nulla', async()=> {
+    it('should return nulla for 0', async()=> {
       expect(await service.toRoman(0)).toBe('nulla');
     });
   
-    context('when checking first 21 numbers', () => {
+    it('should return the correct value for the first 21 numbers', () => {
       const testMap=new Map([[1,'I'],[2,'II'],[3,'III'],[4,'IV'],[5,'V'],[6,'VI'],[7,'VII'],[8,'VIII'],[9,'IX'],[10,'X'],
               [11,'XI'],[12,'XII'],[13,'XIII'],[14,'XIV'],[15,'XV'],[16,'XVI'],[17,'XVII'],[18,'XVIII'],[19,'XIX'],
               [20,'XX'],[21,'XXI']]);
@@ -97,29 +75,19 @@ describe('Converter service', () =>{
         expect(await service.toRoman(key)).toBe(value);
       });
     });
-  
-    it('toRoman(1999) should return MCMXCIX', async()=> {
-      expect(await service.toRoman(1999)).toBe('MCMXCIX');
-    });
-    
-    it('toRoman(2768) should return MMDCCLXVIII', async()=> {
-      expect(await service.toRoman(2768)).toBe('MMDCCLXVIII');
-    });
-    
-    it('toRoman(3999) should return MMMCMXCIX', async()=> {
-      expect(await service.toRoman(3999)).toBe('MMMCMXCIX');
+
+    it('should return the correct value for valid numbers', () => {
+      const testMap=new Map([[1999,'MCMXCIX'],[2768,'MMDCCLXVIII'],[3999,'MMMCMXCIX']]);
+      testMap.forEach((value:string,key:number) => async () => {
+        expect(await service.toRoman(key)).toBe(value);
+      });
     });
 
-    it('toRoman(4000) should throw Bad Request Error', async()=> {
-      await expect(service.toRoman(4000)).rejects.toThrow(BadRequestError);
-    });
-    
-    it('toRoman(-5) should throw Bad Request Error', async()=> {
-      await expect(service.toRoman(-5)).rejects.toThrow(BadRequestError);
-    });
-    
-    it('toRoman(1.35) should throw Bad Request Error', async()=> {
-      await expect(service.toRoman(1.35)).rejects.toThrow(BadRequestError);
+    it('should throw Bad Request Error for out of scope numbers', () => {
+      const testArray=[4000,-5,1.35];
+      testArray.forEach((value) => async () => {
+        expect(await service.toRoman(value)).rejects.toThrow(BadRequestError);
+      });
     });
 
   });
