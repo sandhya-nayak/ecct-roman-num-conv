@@ -32,13 +32,10 @@ describe('Converter service', () =>{
 
   const evaluateTestArrayInvalidInput = async (testArray:Array<string|number>) => {
     for (const value of testArray){
-      console.log(value);
       if(typeof value == "string"){
-        console.log("string");
         await expect(service.toNumber(value)).rejects.toThrow(BadRequestError);
       }
       else if(typeof value == "number"){
-        console.log("number");
         await expect(service.toRoman(value)).rejects.toThrow(BadRequestError);
       }
       else{
