@@ -76,10 +76,10 @@ export class ConverterService implements ConverterApi {
         }
       }
       if(consecutiveSameLetterCount == 4){
-        return false;
+        return true;
       }
     }
-    return true;
+    return false;
   }
 
   async toNumber(value: string): Promise<number> {
@@ -88,7 +88,7 @@ export class ConverterService implements ConverterApi {
     if(value == 'nulla'){
       return 0;
     }
-    if(await this.hasFourConsecutiveSameLetters(value)){
+    if(!await this.hasFourConsecutiveSameLetters(value)){
       let numericalValue = 0;
       for(let i = 0; i<value.length; i++){
         let [currentVal,currentIndex] = this.getNumberFromMap(value.charAt(i));
