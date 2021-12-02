@@ -88,6 +88,7 @@ export class ConverterService implements ConverterApi {
     if(value == 'nulla'){
       return 0;
     }
+    value = value.toUpperCase();
     if(!await this.hasFourConsecutiveSameLetters(value)){
       let numericalValue = 0;
       for(let i = 0; i<value.length; i++){

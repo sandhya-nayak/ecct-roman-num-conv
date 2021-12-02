@@ -78,6 +78,11 @@ describe('Converter service', () =>{
       await evaluateTestMapValidInput(testMap);
     });
 
+    it('should return correct value for valid roman numbers irrespective of case', async() => {
+      const testMap = new Map([['MCmxCIV',1994],['mmdcclxviii',2768],['mMmCmXcIx',3999]]);
+      await evaluateTestMapValidInput(testMap);
+    });
+
     it('should throw Bad Request Error for invalid roman numbers', async() => {
       const testArray = ['MMXMCMXCIX','XIIII','MXCXI','IVIII','IXVI','ABCD'];
       await evaluateTestArrayInvalidInput(testArray);
