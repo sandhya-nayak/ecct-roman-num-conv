@@ -9,7 +9,6 @@ const numberRomanMap =  new Map<number,string>([
 
 export class ConverterService implements ConverterApi {
   logger: LoggerApi;
-
   constructor(
     @Inject
     logger: LoggerApi,
@@ -49,8 +48,6 @@ export class ConverterService implements ConverterApi {
       }
       return output;
     }
-    else{
-      throw new Errors.BadRequestError;
-    }
+    throw new Errors.BadRequestError;
   }
 }
