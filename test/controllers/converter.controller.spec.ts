@@ -4,7 +4,7 @@ import {Container, Scope} from 'typescript-ioc';
 
 import {ConverterApi} from '../../src/services';
 import {buildApiServer} from '../helper';
-import { BadRequestError } from 'typescript-rest/dist/server/model/errors';
+import {BadRequestError} from 'typescript-rest/dist/server/model/errors';
 
 class MockConverterService implements ConverterApi {
   toNumber = jest.fn().mockName('toNumber');
@@ -19,9 +19,7 @@ describe('converter.controller', () => {
 
   beforeEach(() => {
     const apiServer = buildApiServer();
-
     app = apiServer.getApp();
-
     Container.bind(ConverterApi).scope(Scope.Singleton).to(MockConverterService);
 
     const mockService: ConverterApi = Container.get(ConverterApi);

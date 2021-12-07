@@ -54,11 +54,10 @@ describe('Converter service', () =>{
     });
 
     describe('should throw Bad Request Error for invalid roman numbers', () => {
-      it.each(['MMXMCMXCIX','XIIII','MXCXI','IVIII','IXVI','ABCD',''])('toNumber(%s) should throwBadRequestError', async (roman) => {
+      it.each(['MMXMCMXCIX','XIIII','MXCXI','IVIII','IXVI','ABCD',''])('toNumber(%s) should throw Bad Request Error', async (roman) => {
         await expect(service.toNumber(roman)).rejects.toThrow(BadRequestError);
       });
     });
-
   });
 
   context('toRoman', () => {
@@ -80,10 +79,9 @@ describe('Converter service', () =>{
     });
 
     describe('should throw Bad Request Error for out of scope numbers', () => {
-      it.each([4000,-5,1.35])('toRoman(%s) should throw BadRequestError', async (numInput) => {
+      it.each([4000,-5,1.35])('toRoman(%s) should throw Bad Request Error', async (numInput) => {
         await expect(service.toRoman(numInput)).rejects.toThrow(BadRequestError);
       });
     });
-
   });
 });
