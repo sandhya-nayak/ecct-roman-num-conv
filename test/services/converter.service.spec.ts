@@ -53,6 +53,12 @@ describe('Converter service', () =>{
       });
     });
 
+    describe('should return correct value for valid roman numbers if they have preceding or succeeding space', () => {
+      it.each([[' XII',12],['I ',1],[' II ',2],[' nULLa ',0]])('toNumber(%s) should return %s', async (roman, expectedNumber) => {
+        expect(await service.toNumber(roman)).toBe(expectedNumber);
+      });
+    });
+
     describe('should throw Bad Request Error for invalid roman numbers', () => {
       it.each(['MMXMCMXCIX','XIIII','MXCXI','IVIII','IXVI','ABCD',''])('toNumber(%s) should throw Bad Request Error', async (roman) => {
         await expect(service.toNumber(roman)).rejects.toThrow(BadRequestError);
