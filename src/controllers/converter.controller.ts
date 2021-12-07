@@ -17,17 +17,16 @@ export class ConverterController {
 
   @Path('/to-roman')
   @GET
-  async toRoman(@QueryParam('value') value:number): Promise<object> {
+  async toRoman(@QueryParam('value') value:number): Promise<string> {
     this.logger.info(`Converting ${value} to roman`);
-    const resp = await this.service.toRoman(value);
-    return {value: resp};
+    return await this.service.toRoman(value);
   }
 
   @Path('/to-number')
   @GET
-  async toNumber(@QueryParam('value') value:string): Promise<object> {
+  async toNumber(@QueryParam('value') value:string): Promise<number> {
     this.logger.info(`Converting ${value} to number`);
-    const resp = await this.service.toNumber(value);
-    return {value: resp};
+    return await this.service.toNumber(value);
+
   }
 }

@@ -46,7 +46,7 @@ describe('converter.controller', () => {
             .query({value: romanInput})
             .expect(200)
             .then((response) => {
-              expect(response.body["value"]).toBe(numericOutput);
+              expect(parseInt(response.text)).toBe(numericOutput);
             });
       });
     });
@@ -84,7 +84,7 @@ describe('converter.controller', () => {
             .query({value: numericInput})
             .expect(200)
             .then((response) => {
-              expect(response.body["value"]).toBe(romanOutput);
+              expect(response.text).toBe(romanOutput);
             });
       });
     });
