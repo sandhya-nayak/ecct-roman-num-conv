@@ -47,6 +47,7 @@ describe('converter.controller', () => {
             .expect(200)
             .then((response) => {
               expect(parseInt(response.text)).toBe(numericOutput);
+              expect(response.headers["content-type"]).toMatch(/text\/.*/);
             });
       });
     });
@@ -85,6 +86,7 @@ describe('converter.controller', () => {
             .expect(200)
             .then((response) => {
               expect(response.text).toBe(romanOutput);
+              expect(response.headers["content-type"]).toMatch(/text\/.*/);
             });
       });
     });
