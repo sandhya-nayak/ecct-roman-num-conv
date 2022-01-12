@@ -32,9 +32,9 @@ RUN npm ci --only=production
 COPY licenses /licenses
 COPY public public
 
-ENV HOST=0.0.0.0 PORT=3000
+ENV HOST=0.0.0.0 PORT=3001
 
-EXPOSE 3000/tcp
+EXPOSE 3001/tcp
 
 CMD ["npm","run","serve"]
 

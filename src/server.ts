@@ -16,7 +16,7 @@ import cors = require('cors');
 const config = npmPackage.config || {
   protocol: 'http',
   host: 'localhost',
-  port: 3000,
+  port: 3001,
   'context-root': '/'
 };
 const configApiContext = config['context-root'];

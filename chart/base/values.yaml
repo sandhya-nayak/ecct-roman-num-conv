@@ -7,7 +7,7 @@ base:
 
   image:
     repository: bitnami/nginx
-    port: 3000
+    port: 3001
     probePath: /
     # Overrides the image tag whose default is the chart appVersion.
     tag: ""
